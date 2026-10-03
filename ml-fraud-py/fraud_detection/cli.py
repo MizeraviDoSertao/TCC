@@ -3,16 +3,18 @@ from __future__ import annotations
 import argparse
 import json
 import logging
+import threading
 from dataclasses import asdict
 from pathlib import Path
 from typing import Sequence
 
-from fraud_detection.application.scoring import FraudScoringService
+from fraud_detection.application.scoring import FraudScoringService, ReloadingFraudScoringService
 from fraud_detection.application.training import ModelTrainingService
 from fraud_detection.config import Settings
 from fraud_detection.domain import TrainingRequest
 from fraud_detection.infrastructure.dataset import PandasDatasetReader
 from fraud_detection.infrastructure.kafka import KafkaScoringWorker
+from fraud_detection.infrastructure.model_management import KafkaModelManagementWorker
 from fraud_detection.infrastructure.model_repository import JoblibModelRepository
 from fraud_detection.normalization import normalize_frame_columns
 
@@ -29,6 +31,8 @@ def main(arguments: Sequence[str] | None = None) -> int:
     return _train(args, settings)
   if args.command == "consume":
     return _consume(settings)
+  if args.command == "serve":
+    return _serve(settings)
   if args.command == "inspect":
     return _inspect(args)
   parser.error("A command is required")
@@ -52,9 +56,20 @@ def _train(args: argparse.Namespace, settings: Settings) -> int:
 
 
 def _consume(settings: Settings) -> int:
-  bundle = JoblibModelRepository().load(settings.artifact_path.resolve())
-  KafkaScoringWorker(settings, FraudScoringService(bundle)).run_forever()
+  KafkaScoringWorker(
+    settings, ReloadingFraudScoringService(settings.artifact_path)
+  ).run_forever()
   return 0
+
+
+def _serve(settings: Settings) -> int:
+  manager = threading.Thread(
+    target=KafkaModelManagementWorker(settings).run_forever,
+    name="model-management-worker",
+    daemon=True,
+  )
+  manager.start()
+  return _consume(settings)
 
 
 def _inspect(args: argparse.Namespace) -> int:
@@ -71,6 +86,7 @@ def _parser() -> argparse.ArgumentParser:
   train.add_argument("--dataset", required=True)
   train.add_argument("--artifact")
   commands.add_parser("consume", help="Consume Kafka transactions and publish scores")
+  commands.add_parser("serve", help="Run scoring, training and model activation workers")
   inspect = commands.add_parser("inspect", help="Inspect normalized dataset columns")
   inspect.add_argument("--dataset", required=True)
   return parser

@@ -11,12 +11,24 @@ public class KafkaTopicConfig {
 
   private final String transactionsTopic;
   private final String resultsTopic;
+  private final String trainingRequestsTopic;
+  private final String trainingResultsTopic;
+  private final String activationRequestsTopic;
+  private final String activationResultsTopic;
 
   public KafkaTopicConfig(
       @Value("${fraud.kafka.transactions-topic}") final String transactionsTopic,
-      @Value("${fraud.kafka.results-topic}") final String resultsTopic) {
+      @Value("${fraud.kafka.results-topic}") final String resultsTopic,
+      @Value("${fraud.kafka.training-requests-topic}") final String trainingRequestsTopic,
+      @Value("${fraud.kafka.training-results-topic}") final String trainingResultsTopic,
+      @Value("${fraud.kafka.activation-requests-topic}") final String activationRequestsTopic,
+      @Value("${fraud.kafka.activation-results-topic}") final String activationResultsTopic) {
     this.transactionsTopic = transactionsTopic;
     this.resultsTopic = resultsTopic;
+    this.trainingRequestsTopic = trainingRequestsTopic;
+    this.trainingResultsTopic = trainingResultsTopic;
+    this.activationRequestsTopic = activationRequestsTopic;
+    this.activationResultsTopic = activationResultsTopic;
   }
 
   @Bean
@@ -41,5 +53,29 @@ public class KafkaTopicConfig {
         .partitions(3)
         .replicas(1)
         .build();
+  }
+
+  @Bean
+  public NewTopic modelTrainingRequestsTopic() {
+    return lifecycleTopic(trainingRequestsTopic);
+  }
+
+  @Bean
+  public NewTopic modelTrainingResultsTopic() {
+    return lifecycleTopic(trainingResultsTopic);
+  }
+
+  @Bean
+  public NewTopic modelActivationRequestsTopic() {
+    return lifecycleTopic(activationRequestsTopic);
+  }
+
+  @Bean
+  public NewTopic modelActivationResultsTopic() {
+    return lifecycleTopic(activationResultsTopic);
+  }
+
+  private NewTopic lifecycleTopic(final String name) {
+    return TopicBuilder.name(name).partitions(1).replicas(1).build();
   }
 }

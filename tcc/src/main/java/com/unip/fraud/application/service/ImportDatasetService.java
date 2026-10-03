@@ -12,6 +12,7 @@ import com.unip.fraud.application.port.in.ImportDatasetUseCase;
 import com.unip.fraud.application.port.out.importing.ImportFileStorageOutPort;
 import com.unip.fraud.application.port.out.importing.ImportJobLauncherOutPort;
 import com.unip.fraud.application.port.out.repository.ImportJobRepositoryOutPort;
+import com.unip.fraud.application.port.out.repository.ActiveModelRepositoryOutPort;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -35,22 +36,29 @@ public class ImportDatasetService implements ImportDatasetUseCase, GetImportsUse
   private final ImportFileStorageOutPort storage;
   private final ImportJobRepositoryOutPort repository;
   private final ImportJobLauncherOutPort launcher;
+  private final ActiveModelRepositoryOutPort activeModels;
   private final long maxFileSize;
 
   public ImportDatasetService(
       final ImportFileStorageOutPort storage,
       final ImportJobRepositoryOutPort repository,
       final ImportJobLauncherOutPort launcher,
+      final ActiveModelRepositoryOutPort activeModels,
       @Value("${imports.max-file-size}") final long maxFileSize) {
     this.storage = storage;
     this.repository = repository;
     this.launcher = launcher;
+    this.activeModels = activeModels;
     this.maxFileSize = maxFileSize;
   }
 
   @Override
   public ImportJobView importDataset(final ImportFileCommand command) {
     validate(command);
+    requireArgument(
+        activeModels.hasActiveModel(),
+        "Activate a fraud model before submitting transactions for analysis"
+    );
     final UUID importId = UUID.randomUUID();
     final StoredImportFile storedFile = storage.store(importId, command);
     final var duplicate = repository.findLatestByHashAndStatusIn(

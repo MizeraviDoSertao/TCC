@@ -1,30 +1,39 @@
 :host { display: block; }
 .hero-copy { max-width: 720px; margin: 10px 0 0; color: var(--text-muted); line-height: 1.6; }
-.upload-card { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 18px; padding: 22px; border: 1px dashed rgba(124, 108, 255, .38); border-radius: var(--radius-lg); background: linear-gradient(120deg, rgba(124, 108, 255, .09), rgba(54, 211, 153, .035)); }
+.model-note { display: flex; align-items: center; gap: 10px; align-self: center; padding: 11px 14px; border: 1px solid rgba(79, 209, 161, .16); border-radius: 13px; background: rgba(79, 209, 161, .055); box-shadow: inset 0 1px 0 rgba(255,255,255,.025); }
+.model-note > i { display: grid; width: 24px; height: 24px; place-items: center; color: #6ee7c3; font-size: 12px; font-style: normal; font-weight: 900; }
+.model-note strong, .model-note small { display: block; }
+.model-note strong { color: var(--text-muted); font-size: 11px; }
+.model-note small { margin-top: 2px; color: var(--text-soft); font-size: 9px; }
+.upload-card { position: relative; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 18px; overflow: hidden; padding: 28px; border: 1px dashed rgba(128, 165, 230, .34); border-radius: var(--radius-lg); background: linear-gradient(135deg, rgba(79, 140, 255, .075), rgba(21, 31, 46, .9) 45%, rgba(15, 23, 35, .9)); box-shadow: var(--shadow); }
+.upload-card::after { position: absolute; right: -70px; bottom: -100px; width: 240px; height: 240px; border-radius: 50%; background: rgba(79, 140, 255, .12); content: ''; filter: blur(55px); }
 .upload-copy { display: flex; align-items: center; gap: 14px; }
 .upload-copy h2 { margin: 0; }
 .upload-copy p { margin: 5px 0 0; color: var(--text-soft); font-size: 13px; }
-.upload-icon { display: grid; width: 46px; height: 46px; flex: 0 0 auto; place-items: center; border-radius: 14px; color: #d9d4ff; background: rgba(124, 108, 255, .18); font-size: 23px; }
-.file-actions { display: flex; gap: 8px; }
+.upload-icon { display: grid; width: 50px; height: 50px; flex: 0 0 auto; place-items: center; border: 1px solid rgba(132, 177, 255, .3); border-radius: 15px; color: #bad0ff; background: linear-gradient(145deg, rgba(79, 140, 255, .24), rgba(79, 140, 255, .08)); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08); }
+.upload-icon svg { width: 23px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
+.file-actions { z-index: 1; display: flex; gap: 8px; }
 .file-picker input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
-.file-picker span { display: grid; min-height: 40px; padding: 0 15px; place-items: center; border: 1px solid var(--border); border-radius: 11px; color: var(--text-muted); background: rgba(255, 255, 255, .03); cursor: pointer; font-size: 13px; font-weight: 800; }
+.file-picker span { display: grid; min-height: 42px; padding: 0 15px; place-items: center; border: 1px solid var(--border-strong); border-radius: 11px; color: var(--text-muted); background: rgba(255, 255, 255, .035); cursor: pointer; font-size: 12px; font-weight: 800; }
 .selected-file { grid-column: 1 / -1; display: flex; gap: 8px; padding-top: 12px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 12px; }
 .selected-file span { color: var(--text-soft); }
 .imports-layout { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(330px, .75fr); gap: 14px; margin-top: 16px; align-items: start; }
 .section-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; margin-bottom: 18px; }
-.section-heading > span { color: var(--text-soft); font-size: 11px; }
+.section-heading > span { color: var(--text-soft); font-size: 10px; }
+.auto-update { display: inline-flex; align-items: center; gap: 6px; }
+.auto-update i { width: 5px; height: 5px; border-radius: 50%; background: var(--success); }
 .import-row { display: grid; width: 100%; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 13px; padding: 15px 11px; border: 0; border-top: 1px solid var(--border); color: inherit; background: transparent; cursor: pointer; text-align: left; }
-.import-row:hover, .import-row.selected { background: rgba(124, 108, 255, .055); }
+.import-row:hover, .import-row.selected { background: rgba(59, 130, 196, .07); }
 .import-row.selected { box-shadow: inset 3px 0 var(--accent); }
-.file-type { display: grid; width: 43px; height: 43px; place-items: center; border-radius: 12px; color: var(--accent-soft); background: rgba(124, 108, 255, .1); font-size: 10px; font-weight: 900; }
+.file-type { display: grid; width: 43px; height: 43px; place-items: center; border: 1px solid var(--border); border-radius: 12px; color: var(--accent-soft); background: rgba(79, 140, 255, .09); font-size: 10px; font-weight: 800; }
 .import-main { min-width: 0; }
 .import-main strong, .import-main small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .import-main strong { color: var(--text); font-size: 13px; }
 .import-main small { margin-top: 4px; color: var(--text-soft); font-size: 11px; }
 .progress { display: block; height: 4px; margin-top: 8px; overflow: hidden; border-radius: 999px; background: #19263a; }
-.progress i { display: block; min-width: 2px; height: 100%; background: linear-gradient(90deg, #7c6cff, #4ad0ad); }
+.progress i { display: block; min-width: 2px; height: 100%; background: var(--accent); }
 .status { padding: 6px 8px; border-radius: 999px; color: #a8b5c8; background: rgba(148, 163, 184, .08); font-size: 10px; font-weight: 800; white-space: nowrap; }
-.status[data-status='PROCESSING'], .status[data-status='QUEUED'] { color: #a9a0ff; background: rgba(124, 108, 255, .11); }
+.status[data-status='PROCESSING'], .status[data-status='QUEUED'] { color: var(--accent-soft); background: rgba(59, 130, 196, .12); }
 .status[data-status='COMPLETED'] { color: #6fe0b8; background: rgba(54, 211, 153, .09); }
 .status[data-status='COMPLETED_WITH_WARNINGS'] { color: #f5c66c; background: rgba(248, 189, 85, .09); }
 .status[data-status='FAILED'] { color: #ff8c9b; background: rgba(251, 97, 118, .1); }

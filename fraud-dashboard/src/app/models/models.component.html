@@ -1,0 +1,100 @@
+<main class="page-shell">
+  <section class="page-hero models-hero">
+    <div>
+      <p class="eyebrow">Governança de IA</p>
+      <h1>Modelos de fraude</h1>
+      <p class="hero-copy">Treine novas versões com dados históricos e ative somente modelos revisados. O modelo atual continua operando durante todo o processo.</p>
+    </div>
+    <div class="active-summary" [class.empty]="!activeModel">
+      <span class="active-dot"></span>
+      <div>
+        <small>Modelo em produção</small>
+        <strong>{{ activeModel?.modelVersion || 'Nenhum modelo ativo' }}</strong>
+        <span *ngIf="activeModel">{{ modelTypeLabel(activeModel.modelType) }} · ativado {{ activeModel.activatedAt | date:'dd/MM/yyyy HH:mm' }}</span>
+      </div>
+    </div>
+  </section>
+
+  <div *ngIf="errorMessage" class="alert error" role="alert">{{ errorMessage }}</div>
+
+  <section class="model-layout">
+    <article class="panel training-panel">
+      <div class="section-heading">
+        <div><p class="eyebrow">Área administrativa</p><h2>Treinar nova versão</h2></div>
+        <span class="protected"><i>◆</i> Acesso restrito</span>
+      </div>
+
+      <p class="panel-copy">Use preferencialmente um dataset histórico com a fraude confirmada. Sem rótulo, o sistema cria um detector de anomalias. Em ambos os casos, o resultado será apenas um candidato.</p>
+
+      <label class="file-drop">
+        <input #fileInput type="file" accept=".csv,.xls,.xlsx" (change)="chooseFile($event)">
+        <span class="drop-icon">↑</span>
+        <span>
+          <strong>{{ selectedFile?.name || 'Selecionar dataset de treinamento' }}</strong>
+          <small>{{ selectedFile ? fileSize(selectedFile) : 'CSV, XLS ou XLSX · máximo de 50 MB' }}</small>
+        </span>
+      </label>
+
+      <div class="admin-fields">
+        <label><span>Usuário administrador</span><input [(ngModel)]="adminUser" type="text" autocomplete="username" placeholder="Usuário"></label>
+        <label><span>Senha</span><input [(ngModel)]="adminPassword" type="password" autocomplete="current-password" placeholder="Senha administrativa"></label>
+      </div>
+
+      <button type="button" class="button train-button" (click)="train()" [disabled]="!selectedFile || !adminUser || !adminPassword || submitting">
+        {{ submitting ? 'Enviando solicitação…' : 'Iniciar treinamento' }}
+      </button>
+      <small class="security-note">As credenciais são usadas somente nesta ação e não ficam armazenadas no navegador.</small>
+    </article>
+
+    <aside class="process-card">
+      <p class="eyebrow">Fluxo seguro</p>
+      <h2>Da base histórica à produção</h2>
+      <ol>
+        <li><span>1</span><div><strong>Validar</strong><small>Formato, rótulo e qualidade dos dados</small></div></li>
+        <li><span>2</span><div><strong>Treinar</strong><small>Criação isolada de uma versão candidata</small></div></li>
+        <li><span>3</span><div><strong>Avaliar</strong><small>Métricas disponíveis antes da decisão</small></div></li>
+        <li><span>4</span><div><strong>Ativar</strong><small>Troca controlada, sem interromper análises</small></div></li>
+      </ol>
+    </aside>
+  </section>
+
+  <section class="panel history-panel">
+    <div class="section-heading">
+      <div><p class="eyebrow">Auditoria</p><h2>Histórico de versões</h2></div>
+      <span class="auto-update"><i></i> Atualização automática</span>
+    </div>
+
+    <div *ngIf="loading" class="empty-state">Carregando modelos…</div>
+    <div *ngIf="!loading && models.length === 0" class="empty-state">Nenhum treinamento solicitado ainda.</div>
+
+    <article *ngFor="let model of models" class="model-row" [class.active]="model.active">
+      <div class="model-main">
+        <div class="model-title">
+          <span class="model-symbol">M</span>
+          <div><strong>{{ model.modelVersion || model.fileName }}</strong><small>{{ model.fileName }} · solicitado por {{ model.requestedBy }}</small></div>
+        </div>
+        <span class="status" [attr.data-status]="model.status">{{ statusLabel(model.status) }}</span>
+      </div>
+
+      <div class="model-meta">
+        <span><small>Tipo</small><strong>{{ modelTypeLabel(model.modelType) }}</strong></span>
+        <span><small>Registros</small><strong>{{ model.rowCount === null ? '—' : (model.rowCount | number) }}</strong></span>
+        <span><small>Variáveis</small><strong>{{ model.featureCount ?? '—' }}</strong></span>
+        <span><small>Solicitado</small><strong>{{ model.requestedAt | date:'dd/MM/yy HH:mm' }}</strong></span>
+      </div>
+
+      <div class="metrics" *ngIf="metricEntries(model).length > 0">
+        <span *ngFor="let metric of metricEntries(model)"><small>{{ metricLabel(metric[0]) }}</small><strong>{{ metric[1] | percent:'1.1-1' }}</strong></span>
+      </div>
+
+      <div *ngIf="model.errorMessage" class="model-error">{{ model.errorMessage }}</div>
+
+      <div class="model-actions" *ngIf="model.status === 'READY' || model.status === 'ACTIVATION_FAILED'">
+        <span>Revise as métricas antes de disponibilizar esta versão para novas análises.</span>
+        <button type="button" class="button" (click)="activate(model)" [disabled]="!adminUser || !adminPassword || !!activatingId">
+          {{ activatingId === model.trainingId ? 'Ativando…' : 'Ativar modelo' }}
+        </button>
+      </div>
+    </article>
+  </section>
+</main>

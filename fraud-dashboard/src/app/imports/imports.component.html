@@ -1,18 +1,21 @@
 <main class="page-shell">
   <section class="page-hero">
     <div>
-      <p class="eyebrow">Entrada do pipeline</p>
-      <h1>Importações</h1>
-      <p class="hero-copy">Envie CSV, XLS ou XLSX e acompanhe o processamento do Spring Batch até as camadas Silver e Gold.</p>
+      <p class="eyebrow">Nova análise</p>
+      <h1>Analise seus dados</h1>
+      <p class="hero-copy">Envie um arquivo de sinistros e acompanhe cada etapa, da validação dos dados até a classificação de risco.</p>
     </div>
+    <span class="model-note"><i aria-hidden="true">✓</i><span><strong>Modelo protegido</strong><small>Este fluxo não altera o modelo ativo</small></span></span>
   </section>
 
   <section class="upload-card">
     <div class="upload-copy">
-      <span class="upload-icon" aria-hidden="true">↑</span>
+      <span class="upload-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M5 15v4h14v-4"/></svg>
+      </span>
       <div>
-        <h2>Novo dataset</h2>
-        <p>As colunas são detectadas automaticamente. Limite configurado pelo backend: 50 MB.</p>
+        <h2>Selecione o arquivo para análise</h2>
+        <p>CSV, XLS ou XLSX · até 50 MB · colunas detectadas automaticamente</p>
       </div>
     </div>
     <div class="file-actions">
@@ -21,7 +24,7 @@
         <span>{{ selectedFile ? 'Trocar arquivo' : 'Selecionar arquivo' }}</span>
       </label>
       <button type="button" class="button" (click)="upload()" [disabled]="!selectedFile || uploading">
-        {{ uploading ? 'Enviando…' : 'Iniciar importação' }}
+        {{ uploading ? 'Enviando arquivo…' : 'Iniciar análise' }}
       </button>
     </div>
     <div *ngIf="selectedFile" class="selected-file">
@@ -35,8 +38,8 @@
   <section class="imports-layout">
     <article class="panel history-panel">
       <div class="section-heading">
-        <div><p class="eyebrow">Histórico</p><h2>Processamentos recentes</h2></div>
-        <span>Atualização automática</span>
+        <div><p class="eyebrow">Histórico</p><h2>Análises recentes</h2></div>
+        <span class="auto-update"><i></i> Atualização automática</span>
       </div>
 
       <div *ngIf="loading" class="empty">Carregando importações…</div>
@@ -93,8 +96,8 @@
 
     <ng-template #detailHint>
       <aside class="panel detail-panel hint">
-        <span>☷</span><h2>Selecione uma importação</h2>
-        <p>Você verá progresso, quantidades, erros e acesso aos dados processados.</p>
+        <span>☷</span><h2>Selecione uma análise</h2>
+        <p>Veja o progresso, a qualidade dos dados e o acesso aos resultados processados.</p>
       </aside>
     </ng-template>
   </section>

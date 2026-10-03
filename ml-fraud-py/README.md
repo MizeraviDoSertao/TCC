@@ -49,6 +49,7 @@ From `ml-fraud-py`:
 python -m pip install -r requirements.txt
 python -m fraud_detection train --dataset ../fraud_scenario_1.csv
 python -m fraud_detection consume
+python -m fraud_detection serve
 python -m fraud_detection inspect --dataset ../fraud_scenario_1.csv
 python -m unittest discover -s tests -v
 ```
@@ -75,6 +76,11 @@ python consult-column.py --dataset ../fraud_scenario_1.csv
 | `KAFKA_RESULTS_TOPIC` | `fraud-results` |
 | `KAFKA_CONSUMER_GROUP` | `ml-fraud-consumer` |
 | `KAFKA_MESSAGE_MAX_RETRIES` | `3` |
+| `KAFKA_TRAINING_REQUESTS_TOPIC` | `model-training-requests` |
+| `KAFKA_TRAINING_RESULTS_TOPIC` | `model-training-results` |
+| `KAFKA_ACTIVATION_REQUESTS_TOPIC` | `model-activation-requests` |
+| `KAFKA_ACTIVATION_RESULTS_TOPIC` | `model-activation-results` |
+| `FRAUD_CANDIDATE_DIRECTORY` | `artifacts/candidates` |
 
 Messages that cannot be scored after the configured retries are published to
 `transactions.DLT`. Results use the contract expected by the Java consumer:

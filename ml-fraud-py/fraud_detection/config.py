@@ -27,6 +27,12 @@ class Settings:
   anomaly_contamination: float
   kafka_retry_seconds: float
   message_max_retries: int
+  training_requests_topic: str = "model-training-requests"
+  training_results_topic: str = "model-training-results"
+  activation_requests_topic: str = "model-activation-requests"
+  activation_results_topic: str = "model-activation-results"
+  training_consumer_group: str = "ml-model-manager"
+  candidate_directory: Path = Path("artifacts/candidates")
 
   @classmethod
   def from_environment(cls) -> "Settings":
@@ -55,6 +61,24 @@ class Settings:
         "KAFKA_RETRY_SECONDS", 5.0, minimum=0.1, maximum=300.0
       ),
       message_max_retries=_integer("KAFKA_MESSAGE_MAX_RETRIES", 3, minimum=1),
+      training_requests_topic=os.getenv(
+        "KAFKA_TRAINING_REQUESTS_TOPIC", "model-training-requests"
+      ),
+      training_results_topic=os.getenv(
+        "KAFKA_TRAINING_RESULTS_TOPIC", "model-training-results"
+      ),
+      activation_requests_topic=os.getenv(
+        "KAFKA_ACTIVATION_REQUESTS_TOPIC", "model-activation-requests"
+      ),
+      activation_results_topic=os.getenv(
+        "KAFKA_ACTIVATION_RESULTS_TOPIC", "model-activation-results"
+      ),
+      training_consumer_group=os.getenv(
+        "KAFKA_TRAINING_CONSUMER_GROUP", "ml-model-manager"
+      ),
+      candidate_directory=Path(
+        os.getenv("FRAUD_CANDIDATE_DIRECTORY", "artifacts/candidates")
+      ),
     )
 
 

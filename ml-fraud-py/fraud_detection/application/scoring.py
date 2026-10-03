@@ -1,8 +1,12 @@
 from __future__ import annotations
 
+from pathlib import Path
+from threading import Lock
+
 import numpy as np
 
 from fraud_detection.domain import ModelBundle, ModelType, ScoringRequest, ScoringResult
+from fraud_detection.infrastructure.model_repository import JoblibModelRepository
 from fraud_detection.normalization import prepare_inference_frame
 
 
@@ -67,6 +71,35 @@ class FraudScoringService:
       raise ValueError("features must contain at least one attribute")
     if request.real_fraud is not None and not isinstance(request.real_fraud, bool):
       raise ValueError("realFraud must be boolean or null")
+
+
+class ReloadingFraudScoringService:
+  """Reloads the active artifact only when a newly approved model replaces it."""
+
+  def __init__(self, artifact_path: Path) -> None:
+    self._artifact_path = artifact_path.resolve()
+    self._repository = JoblibModelRepository()
+    self._lock = Lock()
+    self._modified_at: int | None = None
+    self._delegate: FraudScoringService | None = None
+
+  def score(self, request: ScoringRequest) -> ScoringResult:
+    return self._current_service().score(request)
+
+  def _current_service(self) -> FraudScoringService:
+    try:
+      modified_at = self._artifact_path.stat().st_mtime_ns
+    except FileNotFoundError as exception:
+      raise RuntimeError(
+        "No active fraud model. An administrator must train and activate one first."
+      ) from exception
+
+    with self._lock:
+      if self._delegate is None or self._modified_at != modified_at:
+        bundle = self._repository.load(self._artifact_path)
+        self._delegate = FraudScoringService(bundle)
+        self._modified_at = modified_at
+      return self._delegate
 
 
 def _risk_level(probability: float) -> str:

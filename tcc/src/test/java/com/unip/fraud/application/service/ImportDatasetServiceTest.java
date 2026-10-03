@@ -8,6 +8,7 @@ import com.unip.fraud.application.domain.StoredImportFile;
 import com.unip.fraud.application.port.out.importing.ImportFileStorageOutPort;
 import com.unip.fraud.application.port.out.importing.ImportJobLauncherOutPort;
 import com.unip.fraud.application.port.out.repository.ImportJobRepositoryOutPort;
+import com.unip.fraud.application.port.out.repository.ActiveModelRepositoryOutPort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,6 +21,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ImportDatasetServiceTest {
 
@@ -33,7 +35,7 @@ class ImportDatasetServiceTest {
     storage = new FakeStorage();
     repository = new FakeRepository();
     launcher = new FakeLauncher();
-    service = new ImportDatasetService(storage, repository, launcher, 1024);
+    service = new ImportDatasetService(storage, repository, launcher, () -> true, 1024);
   }
 
   @Test
@@ -71,6 +73,17 @@ class ImportDatasetServiceTest {
     assertThat(storage.discarded).containsExactly(storage.stored);
     assertThat(repository.saved).isEmpty();
     assertThat(launcher.launched).isEmpty();
+  }
+
+  @Test
+  void rejectsAnalysisWhenThereIsNoActiveModel() {
+    service = new ImportDatasetService(storage, repository, launcher, () -> false, 1024);
+
+    assertThatThrownBy(() -> service.importDataset(command()))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("Activate a fraud model");
+    assertThat(storage.discarded).isEmpty();
+    assertThat(repository.saved).isEmpty();
   }
 
   private ImportFileCommand command() {

@@ -25,6 +25,11 @@ public class ApiExceptionHandler {
     return response(HttpStatus.NOT_FOUND, exception.getMessage());
   }
 
+  @ExceptionHandler(SecurityException.class)
+  public ResponseEntity<ApiError> forbidden(final SecurityException exception) {
+    return response(HttpStatus.FORBIDDEN, exception.getMessage());
+  }
+
   @ExceptionHandler(MaxUploadSizeExceededException.class)
   public ResponseEntity<ApiError> fileTooLarge(
       final MaxUploadSizeExceededException exception) {

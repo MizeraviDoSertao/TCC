@@ -17,6 +17,7 @@ interface MetricCard {
   readonly value: number;
   readonly helper: string;
   readonly tone: string;
+  readonly layer: string;
 }
 
 @Component({
@@ -81,10 +82,10 @@ export class AppComponent implements OnInit {
   get metrics(): readonly MetricCard[] {
     const data = this.summary;
     return [
-      { label: 'Bronze', value: data?.totalBronze ?? 0, helper: 'Linhas recebidas', tone: 'bronze' },
-      { label: 'Silver', value: data?.totalSilver ?? 0, helper: 'Sinistros normalizados', tone: 'silver' },
-      { label: 'Gold', value: data?.totalGold ?? 0, helper: 'Análises concluídas', tone: 'gold' },
-      { label: 'Rejeitados', value: data?.totalRejected ?? 0, helper: 'Exigem correção', tone: 'danger' }
+      { label: 'Dados recebidos', value: data?.totalBronze ?? 0, helper: 'Linhas que entraram no pipeline', tone: 'bronze', layer: 'Bronze' },
+      { label: 'Sinistros válidos', value: data?.totalSilver ?? 0, helper: 'Registros limpos e normalizados', tone: 'silver', layer: 'Silver' },
+      { label: 'Análises concluídas', value: data?.totalGold ?? 0, helper: 'Decisões produzidas pelo modelo', tone: 'gold', layer: 'Gold' },
+      { label: 'Dados rejeitados', value: data?.totalRejected ?? 0, helper: 'Registros que exigem correção', tone: 'danger', layer: 'Atenção' }
     ];
   }
 

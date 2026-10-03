@@ -48,6 +48,15 @@ fraud:
   kafka:
     transactions-topic: ${KAFKA_TRANSACTIONS_TOPIC:transactions}
     results-topic: ${KAFKA_RESULTS_TOPIC:fraud-results}
+    training-requests-topic: ${KAFKA_TRAINING_REQUESTS_TOPIC:model-training-requests}
+    training-results-topic: ${KAFKA_TRAINING_RESULTS_TOPIC:model-training-results}
+    activation-requests-topic: ${KAFKA_ACTIVATION_REQUESTS_TOPIC:model-activation-requests}
+    activation-results-topic: ${KAFKA_ACTIVATION_RESULTS_TOPIC:model-activation-results}
+
+models:
+  security:
+    admin-user: ${MODEL_ADMIN_USER:admin}
+    admin-password: ${MODEL_ADMIN_PASSWORD:admin-local}
 
 server:
   servlet:

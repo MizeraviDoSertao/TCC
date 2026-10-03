@@ -1,22 +1,40 @@
 <main class="page-shell">
-  <section class="page-hero">
-    <div>
-      <p class="eyebrow">Centro de decisão</p>
-      <h1>Visão geral de fraude</h1>
+  <section class="page-hero dashboard-hero">
+    <div class="hero-main">
+      <p class="eyebrow">Monitoramento</p>
+      <h1>Risco sob controle.<br><span>Decisões com confiança.</span></h1>
       <p class="hero-copy">
-        Acompanhe a qualidade dos dados, o risco calculado pela IA e o que ainda precisa de revisão.
+        Acompanhe o processamento dos dados, os alertas de fraude e os casos que aguardam revisão.
       </p>
+      <div class="primary-actions">
+        <a class="button" routerLink="/imports">
+          <span aria-hidden="true">＋</span> Nova análise
+        </a>
+        <a class="button secondary" routerLink="/claims">Consultar sinistros</a>
+      </div>
+      <div class="hero-meta" aria-label="Recursos da plataforma">
+        <span><i aria-hidden="true"></i> Monitoramento contínuo</span>
+        <span><i aria-hidden="true"></i> Pipeline auditável</span>
+        <span><i aria-hidden="true"></i> Decisão assistida</span>
+      </div>
     </div>
 
-    <div class="hero-actions">
-      <span class="health" [class.warning]="(summary?.totalRejected ?? 0) > 0" [class.error]="summaryError">
-        <i aria-hidden="true"></i>{{ status }}
-      </span>
-      <button type="button" class="button secondary" (click)="refresh()" [disabled]="loadingSummary">
-        {{ loadingSummary ? 'Atualizando…' : 'Atualizar dados' }}
+    <aside class="operation-card" aria-label="Estado da operação">
+      <div class="operation-heading">
+        <span>Status do sistema</span>
+        <span class="live-label"><i></i> Atualizado</span>
+      </div>
+      <div class="operation-status">
+        <span class="health-icon" [class.warning]="(summary?.totalRejected ?? 0) > 0" [class.error]="summaryError">
+          <i aria-hidden="true"><b></b></i>
+        </span>
+        <div><strong>{{ status }}</strong><small *ngIf="lastUpdated">Dados atualizados às {{ lastUpdated | date:'HH:mm:ss' }}</small></div>
+      </div>
+      <button type="button" class="refresh-button" (click)="refresh()" [disabled]="loadingSummary">
+        <svg viewBox="0 0 24 24" aria-hidden="true" [class.spinning]="loadingSummary"><path d="M20 7v5h-5M4 17v-5h5M6.1 9a7 7 0 0 1 11.4-2.5L20 9M4 15l2.5 2.5A7 7 0 0 0 17.9 15"/></svg>
+        {{ loadingSummary ? 'Sincronizando dados…' : 'Sincronizar agora' }}
       </button>
-      <small *ngIf="lastUpdated">Atualizado {{ lastUpdated | date:'HH:mm:ss' }}</small>
-    </div>
+    </aside>
   </section>
 
   <div *ngIf="summaryError" class="alert error" role="alert">
@@ -26,8 +44,8 @@
   <section class="metric-grid" aria-label="Indicadores da arquitetura medalhão">
     <article *ngFor="let metric of metrics" class="metric-card" [attr.data-tone]="metric.tone">
       <div class="metric-heading">
-        <span>{{ metric.label }}</span>
-        <i aria-hidden="true"></i>
+        <span class="metric-label"><i aria-hidden="true"></i><span>{{ metric.label }}</span></span>
+        <span class="layer-tag">{{ metric.layer }}</span>
       </div>
       <strong>{{ metric.value | number }}</strong>
       <small>{{ metric.helper }}</small>
@@ -38,8 +56,8 @@
     <article class="panel prediction-panel">
       <div class="panel-heading">
         <div>
-          <p class="eyebrow">Modelo de IA</p>
-          <h2>Taxa de alertas de fraude</h2>
+          <p class="eyebrow">Decisões do modelo</p>
+          <h2>Alertas que exigem atenção</h2>
         </div>
         <span class="big-number">{{ data.predictedFraudPercentage | number:'1.1-1' }}%</span>
       </div>
@@ -58,8 +76,8 @@
     <article class="panel risk-panel">
       <div class="panel-heading">
         <div>
-          <p class="eyebrow">Distribuição</p>
-          <h2>Faixas de risco</h2>
+          <p class="eyebrow">Priorização</p>
+          <h2>Distribuição por risco</h2>
         </div>
         <span class="total-label">{{ riskTotal }} análises</span>
       </div>
@@ -85,12 +103,16 @@
     <div class="section-heading">
       <div>
         <p class="eyebrow">Investigação</p>
-        <h2>Resultados processados</h2>
-        <p>Combine os filtros para encontrar análises específicas.</p>
+        <h2>Análises processadas</h2>
+        <p>Encontre rapidamente os casos que precisam de uma decisão humana.</p>
       </div>
       <span class="record-count">{{ totalElements | number }} registros</span>
     </div>
 
+    <div class="filter-heading">
+      <div><span class="filter-icon" aria-hidden="true">⌁</span><strong>Refine sua busca</strong></div>
+      <small>Combine os filtros para priorizar os casos mais relevantes.</small>
+    </div>
     <form class="filters" [formGroup]="filterForm" (ngSubmit)="applyFilters()">
       <label>
         <span>Decisão da IA</span>

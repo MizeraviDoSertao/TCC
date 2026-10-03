@@ -17,6 +17,11 @@ export const routes: Routes = [
     title: 'Importações'
   },
   {
+    path: 'models',
+    loadComponent: () => import('./models/models.component').then(module => module.ModelsComponent),
+    title: 'Gestão de modelos'
+  },
+  {
     path: 'transactions/:transactionId',
     loadComponent: () => import('./transaction-detail/transaction-detail.component')
       .then(module => module.TransactionDetailComponent),
