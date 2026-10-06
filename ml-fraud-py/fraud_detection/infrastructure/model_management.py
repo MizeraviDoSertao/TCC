@@ -62,11 +62,15 @@ class KafkaModelManagementWorker:
         "modelVersion": report.model_version,
         "artifactPath": report.artifact_path,
         "datasetSha256": report.dataset_sha256,
+        "featureCount": report.feature_count,
+        "targetColumn": report.target_column,
       })
       result.pop("model_type", None)
       result.pop("model_version", None)
       result.pop("artifact_path", None)
       result.pop("dataset_sha256", None)
+      result.pop("feature_count", None)
+      result.pop("target_column", None)
     except Exception as exception:
       logger.exception("Training %s failed", training_id)
       result = {
