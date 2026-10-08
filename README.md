@@ -39,3 +39,31 @@ MODEL_ADMIN_USER='gestor' MODEL_ADMIN_PASSWORD='uma-senha-forte' docker compose 
 
 O backend exige a função administrativa nos pedidos de treinamento e ativação.
 O frontend não persiste as credenciais no navegador.
+
+## Documentação técnica
+
+Base oficial para evolução no modelo Spec Driven Development:
+
+- [Arquitetura do Sistema](docs/ARQUITETURA_DO_SISTEMA.md): visão arquitetural,
+  regras, contratos (API, Kafka, banco), dependências, riscos e diretrizes.
+- [Objetivo do Sistema](docs/OBJETIVO_DO_SISTEMA.md): propósito, atores, fluxos
+  de negócio e contexto operacional.
+- READMEs por módulo:
+  - Backend: [tcc](tcc/README.md) ·
+    [application](tcc/src/main/java/com/unip/fraud/application/README.md) ·
+    [adapter/in](tcc/src/main/java/com/unip/fraud/adapter/in/README.md) ·
+    [adapter/in/batch](tcc/src/main/java/com/unip/fraud/adapter/in/batch/README.md) ·
+    [adapter/out](tcc/src/main/java/com/unip/fraud/adapter/out/README.md) ·
+    [config](tcc/src/main/java/com/unip/fraud/config/README.md) ·
+    [db/migration](tcc/src/main/resources/db/migration/README.md)
+  - ML: [ml-fraud-py](ml-fraud-py/README.md) ·
+    [fraud_detection](ml-fraud-py/fraud_detection/README.md) ·
+    [application](ml-fraud-py/fraud_detection/application/README.md) ·
+    [training](ml-fraud-py/fraud_detection/training/README.md) ·
+    [infrastructure](ml-fraud-py/fraud_detection/infrastructure/README.md)
+  - Frontend: [fraud-dashboard](fraud-dashboard/README.md) ·
+    [src/app](fraud-dashboard/src/app/README.md) ·
+    [imports](fraud-dashboard/src/app/imports/README.md) ·
+    [claims](fraud-dashboard/src/app/claims/README.md) ·
+    [transaction-detail](fraud-dashboard/src/app/transaction-detail/README.md) ·
+    [models](fraud-dashboard/src/app/models/README.md)
