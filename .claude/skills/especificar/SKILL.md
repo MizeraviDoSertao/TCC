@@ -1,7 +1,7 @@
 ---
 name: especificar
-description: Cria ou atualiza a especificação de uma funcionalidade do FraudGuard (Spec-Driven Development) em specs/NNN-nome/spec.md, usando o modelo adaptado do spec-kit e as regras do projeto. Use quando pedirem spec, especificação, histórias de usuário ou requisitos de algo novo no sistema.
-argument-hint: <descrição da funcionalidade>
+description: Spec-Driven Development no FraudGuard. Cria a spec de uma funcionalidade nova, registra alterações e correções em specs existentes e implementa uma spec aprovada pelo fluxo da Arquitetura §11.1. Use quando pedirem spec, especificação, requisitos, uma mudança no sistema ou a implementação de uma spec.
+argument-hint: <pedido> | <NNN> <alteração> | implementar <NNN>
 ---
 
 # /especificar
@@ -12,21 +12,30 @@ Pedido do usuário:
 $ARGUMENTS
 ```
 
-Se o pedido estiver vazio, pergunte qual funcionalidade especificar e pare.
-Para atualizar uma spec que já existe, o usuário cita o caminho ou o número
-(ex.: `001`); nesse caso edite o arquivo em vez de criar outro.
+Responda e escreva sempre em português. Se o pedido estiver vazio, pergunte o
+que especificar e pare.
 
-Responda e escreva sempre em português.
+## Escolher o modo
 
-## 1. Conferir a base
+| O pedido | Modo |
+| --- | --- |
+| Começa com `implementar` e um número (ex.: `implementar 001`) | **C. Implementar spec aprovada** |
+| Começa com o número de uma spec (ex.: `001 trocar o histograma por ranking`) | **B. Alterar spec existente** |
+| Muda, corrige ou remove algo que já existe no sistema, ou resolve um item AV/OR/RT | **B** se alguma spec em `specs/` já cobre o assunto; senão **A** com tipo "Alteração" ou "Correção" |
+| Qualquer outra coisa | **A. Nova spec** |
+
+Na dúvida entre A e B, procure em `specs/` (títulos e "Situação atual") e
+pergunte ao usuário qual spec ele quer mudar.
+
+## 1. Conferir a base (todos os modos)
 
 - A branch atual deve partir da `homolog` atualizada (Regras do Projeto,
   "Branch de referência"). Rode `git status` e `git log -1 --oneline`.
 - Se houver mudanças não commitadas, avise o usuário e não troque de branch
   sozinho.
-- Anote o commit da `homolog` usado como base; ele vai no cabeçalho da spec.
+- Anote o commit da `homolog` usado como base.
 
-## 2. Ler antes de escrever
+## 2. Ler antes de escrever (todos os modos)
 
 Leia nesta ordem e use como fonte:
 
@@ -37,40 +46,84 @@ Leia nesta ordem e use como fonte:
    (contratos), §8 (dados), §10 (AV/OR/RT) e §11 (diretrizes)
 5. O README de cada módulo afetado
 6. O código citado por esses documentos. Vale o código: se um documento
-   divergir do código, descreva o código e aponte a divergência na spec.
+   divergir do código, descreva o código e aponte a divergência.
 
-## 3. Conferir o escopo
+## 3. Conferir o escopo (modos A e B)
 
 - Se o pedido estiver em "O que não precisa ser implementado" das Regras do
-  Projeto, **não crie a spec**: diga qual linha das Regras impede e pare.
-- Se o pedido não estiver em "O que ainda vamos implementar", avise que é
-  escopo novo e pergunte se o grupo quer seguir. Só continue com um sim, e
-  registre na seção "Conformidade com o projeto" quem aprovou e quando.
+  Projeto, **pare**: diga qual linha das Regras impede.
+- Se não estiver em "O que ainda vamos implementar" nem for correção de um
+  item AV/OR/RT, avise que é escopo novo e pergunte se o grupo quer seguir.
+  Só continue com um sim, e registre em "Conformidade com o projeto" quem
+  aprovou e quando.
 
-## 4. Criar o arquivo
+## Modo A. Nova spec
 
-- Nome curto de 2 a 4 palavras, em português, minúsculas, sem acento,
-  separado por hífen (ex.: `graficos-dashboard`).
-- Número: o próximo de 3 dígitos depois dos que existem em `specs/`
-  (`001`, `002`...).
-- Copie `.specify/templates/spec-template.md` para
-  `specs/NNN-nome-curto/spec.md`.
-- Acrescente a spec na tabela "Specs" de `specs/README.md` (número, nome e
-  status). Mantenha o status dessa tabela igual ao do cabeçalho da spec.
+1. Nome curto de 2 a 4 palavras, em português, minúsculas, sem acento,
+   separado por hífen (ex.: `graficos-dashboard`). Número: o próximo de 3
+   dígitos depois dos que existem em `specs/`.
+2. Copie `.specify/templates/spec-template.md` para
+   `specs/NNN-nome-curto/spec.md` e preencha o cabeçalho, inclusive o
+   **Tipo** (Nova funcionalidade, Alteração ou Correção).
+3. Preencha seguindo "Regras de preenchimento" abaixo.
+4. Acrescente a spec na tabela "Specs" de `specs/README.md`.
+5. Siga para "Revisar" e "Perguntas".
 
-## 5. Preencher
+## Modo B. Alterar spec existente
+
+1. Abra a spec e leia o "Histórico de alterações".
+2. Atualize só as seções afetadas pela mudança, mantendo os números de RF e
+   CS existentes. Requisito removido fica riscado (`~~RF-004~~`) com o motivo,
+   para não reaproveitar o número.
+3. Atualize "Situação atual" se o código mudou desde a última versão.
+4. Acrescente uma linha no "Histórico de alterações" (data, o que mudou, quem
+   pediu).
+5. Se a spec estava **Aprovada** ou **Implementada** e a mudança altera
+   requisito, contrato ou critério de sucesso, volte o status para
+   **Em revisão** (ou **Rascunho**, se surgir pergunta aberta) e atualize a
+   tabela de `specs/README.md`.
+6. Siga para "Revisar" e "Perguntas".
+
+## Modo C. Implementar spec aprovada
+
+Segue a Arquitetura §11.1.
+
+1. Abra `specs/NNN-*/spec.md`. Se o status não for **Aprovada** ou ainda
+   houver `[PRECISA ESCLARECER]`, pare e diga o que falta decidir.
+2. Se a árvore estiver limpa, crie a branch `NNN-nome-curto` a partir da
+   `homolog` atualizada; se não estiver, pergunte antes.
+3. **Contratos primeiro:** registre na Arquitetura (§7.1, §7.2, §8) o que a
+   seção "Contratos afetados" muda, antes do código.
+4. **Implemente** respeitando as regras R-* (§3) e as diretrizes do módulo
+   (§11.2 a §11.5), na ordem das histórias (P1 primeiro, de modo que cada
+   uma funcione sozinha).
+5. **Teste** os módulos tocados: `./mvnw clean verify` (tcc),
+   `python -m unittest discover -s tests -v` (ml-fraud-py),
+   `npm run build` (fraud-dashboard). Rode também a conferência manual da
+   seção "Verificação e documentação" da spec, quando der.
+6. **Documente no mesmo commit:** README de cada módulo tocado, Arquitetura
+   (§10 quando resolver ou criar item AV/OR/RT), Objetivo do Sistema e a
+   "Conferência com o código" das Regras do Projeto. Mover um item entre as
+   listas das Regras só com o ok do grupo.
+7. Mude o status da spec para **Implementada**, registre no "Histórico de
+   alterações" e atualize `specs/README.md`.
+8. Mostre o que foi feito e o resultado dos testes. Não faça commit, push nem
+   PR sem o usuário pedir; quando ele pedir, o PR aponta para a `homolog` e
+   cita a spec.
+
+## Regras de preenchimento (modos A e B)
 
 - Mantenha as seções e a ordem do modelo. Seção obrigatória que não se aplica
   recebe "Não se aplica" e o motivo.
 - **Situação atual**: cada afirmação com o arquivo que a comprova; inferência
-  marcada como **Hipótese**.
+  marcada como **Hipótese**. Em alteração e correção, esta seção é a mais
+  importante: diga exatamente o que o sistema faz hoje.
 - **Histórias**: atores do Objetivo do Sistema §3, em ordem de prioridade, cada
   uma demonstrável sozinha.
 - **Requisitos**: testáveis, com DEVE / NÃO DEVE, numerados RF-001 em diante.
   Inclua o que não pode mudar (ex.: o fluxo Analisar não altera o modelo
   ativo).
-- **Contratos afetados**: rotas (§7.1), tópicos (§7.2) e tabelas (§8). Se
-  houver mudança, a spec diz que a Arquitetura será atualizada antes do código.
+- **Contratos afetados**: rotas (§7.1), tópicos (§7.2) e tabelas (§8).
 - **Dados e modelo**: siga o princípio VI. Diga qual base sustenta cada
   número; nunca atribua número da base sintética ao fraud_oracle.
 - **Critérios de sucesso**: mensuráveis e conferíveis na demonstração (ex.:
@@ -78,10 +131,10 @@ Leia nesta ordem e use como fonte:
 - No máximo 3 `[PRECISA ESCLARECER: pergunta]`, escolhidas pelo impacto
   (escopo > segurança > experiência do usuário > detalhe técnico). O resto vira
   premissa com o padrão escolhido.
-- Não proponha nada da lista "O que não precisa ser implementado" nem dentro
+- Não proponha nada da lista "O que não precisa ser implementado", nem dentro
   de outra funcionalidade (ex.: SHAP, Streamlit, SMOTE em produção).
 
-## 6. Revisar a spec
+## Revisar (modos A e B)
 
 Confira cada item e corrija o que falhar (até 3 rodadas):
 
@@ -95,8 +148,9 @@ Confira cada item e corrija o que falhar (até 3 rodadas):
       anomalia, base sem rótulo, classe rara, linhas rejeitadas)
 - [ ] Origem dos dados clara (fraud_oracle x base sintética)
 - [ ] No máximo 3 marcações `[PRECISA ESCLARECER]`
+- [ ] Histórico de alterações e tabela de `specs/README.md` atualizados
 
-## 7. Perguntas ao usuário
+## Perguntas (modos A e B)
 
 Se sobrar `[PRECISA ESCLARECER]`, apresente todas de uma vez, numeradas, cada
 uma com o contexto em uma linha e uma tabela:
@@ -110,11 +164,10 @@ uma com o contexto em uma linha e uma tabela:
 Espere a resposta (ex.: "1: A, 2: B"), troque cada marcação pela decisão,
 registre-a em "Perguntas em aberto" e revise de novo.
 
-## 8. Concluir
+## Concluir (modos A e B)
 
 - Informe o caminho da spec, o status (Rascunho enquanto houver pergunta
   aberta; Em revisão quando não houver) e o que falta decidir.
-- Próximo passo: implementar pela Arquitetura §11.1 (contratos, código,
-  testes, documentação no mesmo commit) e abrir o PR para a `homolog` citando
-  a spec.
+- Quando o grupo aprovar, o status vira **Aprovada** e o próximo passo é
+  `/especificar implementar NNN`.
 - Não faça commit nem push sem o usuário pedir.

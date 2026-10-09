@@ -6,6 +6,8 @@
 
 **Status**: Rascunho <!-- Rascunho → Em revisão → Aprovada → Implementada (ou Descartada) -->
 
+**Tipo**: [Nova funcionalidade | Alteração | Correção] <!-- Alteração muda algo que já existe; Correção resolve um item AV/OR/RT ou um defeito -->
+
 **Base do código**: `homolog@[commit]`
 
 **Pedido**: "[descrição original, nas palavras de quem pediu]"
@@ -229,3 +231,14 @@ Como **[ator]**, quero **[ação]** para **[benefício]**.
 -->
 
 - **P1**: [pergunta] — opções: A) [...] *(recomendada)*, B) [...], C) [...]
+
+## Histórico de alterações
+
+<!--
+  Uma linha por versão da spec. Requisito removido fica riscado
+  (~~RF-004~~) com o motivo, para o número não ser reaproveitado.
+-->
+
+| Data | Mudança | Quem pediu |
+| --- | --- | --- |
+| [DD/MM/AAAA] | Criação | [nome] |

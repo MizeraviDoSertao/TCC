@@ -6,6 +6,8 @@
 
 **Status**: Rascunho
 
+**Tipo**: Nova funcionalidade
+
 **Base do código**: `homolog@0d0a9cb`
 
 **Pedido**: "Gráficos no dashboard: distribuição por nível de risco, evolução
@@ -303,3 +305,9 @@ gráfico.
 - **P2 (RF-008)**: como agrupar a evolução? Opções: A) por importação
   *(recomendada: na demonstração tudo acontece no mesmo dia, e por dia o
   gráfico teria um ponto só)*, B) por dia de processamento.
+
+## Histórico de alterações
+
+| Data | Mudança | Quem pediu |
+| --- | --- | --- |
+| 09/10/2026 | Criação, a partir da lista "O que ainda vamos implementar" das Regras do Projeto | Pedro Lucas |

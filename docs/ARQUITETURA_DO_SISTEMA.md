@@ -568,8 +568,8 @@ Ao resolver um item, atualizar esta tabela e o README do módulo afetado.
    `specs/NNN-nome/spec.md`, segue o modelo
    [`.specify/templates/spec-template.md`](../.specify/templates/spec-template.md)
    e respeita a [constituição](../.specify/memory/constitution.md). No Claude
-   Code, `/especificar <pedido>` cria a spec seguindo esses arquivos. Detalhes
-   em [specs/README.md](../specs/README.md).
+   Code, a skill `/especificar` cria e altera specs e implementa as aprovadas
+   seguindo esta seção. Detalhes em [specs/README.md](../specs/README.md).
 2. **Atualizar contratos primeiro:** alterações de API (seção 7.1), tópicos
    (7.2) ou tabelas (8) devem ser documentadas antes do código.
 3. **Implementar respeitando as regras da seção 3.**

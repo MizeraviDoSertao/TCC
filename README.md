@@ -51,7 +51,7 @@ Base oficial para evolução no modelo Spec Driven Development:
 - [Regras do Projeto](docs/REGRAS_DO_PROJETO.md): o que já foi implementado, o
   que ainda será e o que está fora do escopo. Toda análise deve segui-las.
 - [Especificações](specs/README.md): uma spec por mudança, no modelo adaptado do
-  spec-kit. No Claude Code, use `/especificar <pedido>`.
+  spec-kit. No Claude Code, `/especificar` cria, altera e implementa specs.
 - READMEs por módulo:
   - Backend: [tcc](tcc/README.md) ·
     [application](tcc/src/main/java/com/unip/fraud/application/README.md) ·

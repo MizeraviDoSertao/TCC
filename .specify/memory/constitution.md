@@ -72,9 +72,12 @@ Fonte: Objetivo do Sistema §6 e Arquitetura §1.2.
    `specs/NNN-nome/spec.md`.
 3. Resolver as marcações `[PRECISA ESCLARECER]` com o grupo e mudar o status
    para **Aprovada**.
-4. Implementar seguindo a Arquitetura §11.1 e abrir o pull request para a
-   `homolog` citando a spec.
+4. Implementar seguindo a Arquitetura §11.1 (no Claude Code,
+   `/especificar implementar NNN`) e abrir o pull request para a `homolog`
+   citando a spec.
 5. Ao terminar, mudar o status da spec para **Implementada**.
+6. Mudanças futuras na mesma funcionalidade alteram a spec existente
+   (`/especificar NNN <alteração>`) e ficam no "Histórico de alterações".
 
 ## Governança
 
