@@ -11,6 +11,8 @@
 > - Convenção: afirmações sem marcação refletem o código. Inferências estão
 >   marcadas como **Hipótese**.
 > - Documento irmão: [Objetivo do Sistema](./OBJETIVO_DO_SISTEMA.md).
+> - Escopo do grupo (feito, a implementar, fora do escopo):
+>   [Regras do Projeto](./REGRAS_DO_PROJETO.md).
 
 ## Sumário
 
@@ -529,7 +531,7 @@ Ao resolver um item, atualizar esta tabela e o README do módulo afetado.
 | OR-03 | `POST /claims/{id}/reviews`, `GET /claims/{id}` e `GET /imports/{id}` não têm consumidor no frontend; `review.fraud_review` só é escrita, nunca lida. |
 | OR-04 | `ml.model_registry` serve apenas como indicador de modelo ativo: `feature_schema` é sempre `'{}'` e `threshold` é `NULL`. O manifesto `*.metadata.json` do Python não é sincronizado com essa tabela, embora o README antigo do ML sugerisse isso. |
 | OR-05 | Compatibilidade legada no consumidor de resultados (`riskScore`, escala 0–100, `modelVersion` padrão `legacy-model`) e migration V5 (tabelas `public.*`). **Hipótese:** resquícios de uma versão anterior do produtor de resultados. |
-| OR-06 | Arquivos versionados que não fazem parte do build: `tcc/.codex_tmp/build_sinistros_teste.mjs` (gera planilha de teste usando `@oai/artifact-tool`, dependência não declarada; a pasta está no `.gitignore`, mas o arquivo continua rastreado), `ml-fraud-py/artifacts/candidates/*.joblib` (o `.gitignore` cobre só `artifacts/*.joblib`), `ml-fraud-py/.idea/` e `.DS_Store` na raiz (o padrão `.DS_Store/` do `.gitignore` raiz só casa com diretórios). |
+| OR-06 | Arquivos versionados que não fazem parte do build: `tcc/.codex_tmp/build_sinistros_teste.mjs` (gera planilha de teste usando `@oai/artifact-tool`, dependência não declarada; a pasta está no `.gitignore`, mas o arquivo continua rastreado), `ml-fraud-py/artifacts/candidates/*.joblib` (o `.gitignore` cobre só `artifacts/*.joblib`), `ml-fraud-py/.idea/`, `.DS_Store` na raiz (o padrão `.DS_Store/` do `.gitignore` raiz só casa com diretórios) e o build compilado `fraud-dashboard/dist/` (16 arquivos, sem regra no `.gitignore`; fora do escopo segundo as [Regras do Projeto](./REGRAS_DO_PROJETO.md)). |
 | OR-07 | `tcc/FLUXO_ANALISE.md` é apenas um ponteiro e `tcc/ARCHITECTURE.md` está desatualizado (não cobre `/models`, segurança, `ml.model_training` nem `/dashboard/results/{id}`). Substituídos por este documento. |
 
 ### 10.3 Riscos técnicos e débitos (RT)
@@ -620,6 +622,7 @@ Ao resolver um item, atualizar esta tabela e o README do módulo afetado.
 | --- | --- |
 | [docs/OBJETIVO_DO_SISTEMA.md](./OBJETIVO_DO_SISTEMA.md) | Propósito, atores, fluxos de negócio, visão de produto |
 | [docs/ARQUITETURA_DO_SISTEMA.md](./ARQUITETURA_DO_SISTEMA.md) | Este documento |
+| [docs/REGRAS_DO_PROJETO.md](./REGRAS_DO_PROJETO.md) | Regras do grupo: o que já foi feito, o que ainda será implementado e o que está fora do escopo, com conferência no código |
 | [README.md](../README.md) | Como executar o projeto |
 | READMEs de módulo | Listados na seção 5 |
 | `tcc/ARCHITECTURE.md`, `tcc/FLUXO_ANALISE.md` | Histórico; substituídos por este documento (OR-07) |

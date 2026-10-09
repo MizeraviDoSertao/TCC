@@ -48,6 +48,8 @@ Base oficial para evolução no modelo Spec Driven Development:
   regras, contratos (API, Kafka, banco), dependências, riscos e diretrizes.
 - [Objetivo do Sistema](docs/OBJETIVO_DO_SISTEMA.md): propósito, atores, fluxos
   de negócio e contexto operacional.
+- [Regras do Projeto](docs/REGRAS_DO_PROJETO.md): o que já foi implementado, o
+  que ainda será e o que está fora do escopo. Toda análise deve segui-las.
 - READMEs por módulo:
   - Backend: [tcc](tcc/README.md) ·
     [application](tcc/src/main/java/com/unip/fraud/application/README.md) ·
