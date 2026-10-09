@@ -14,6 +14,13 @@
 >   [Conferência com o código](#conferência-com-o-código-da-homolog) registra
 >   onde cada item foi encontrado; divergências devem ser sinalizadas ao grupo.
 
+## Branch de referência
+
+- Todas as análises são baseadas na branch `homolog`. Antes de analisar,
+  atualizar a cópia local com `git checkout homolog` e `git pull`.
+- Novas mudanças partem da `homolog`, e os pull requests apontam para ela.
+- A `main` não é usada como referência de análise.
+
 ## O que implementamos por estar solicitado no MD
 
 - Experimento com Regressão Logística, Árvore e Random Forest.
