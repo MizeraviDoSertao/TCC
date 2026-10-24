@@ -26,6 +26,11 @@ manuscrito trabalhar e pare.
 | Pede texto novo ou reescrita de um trecho | **D. Redigir** |
 | Outra dúvida sobre a escrita | Responda seguindo as regras abaixo |
 
+Desde 24/10/2026 (pedido do Pedro): entregue só avaliação e sugestões de como
+alterar, sem frases ou parágrafos prontos para colar. Referência pronta em ABNT
+pode ir, porque não é texto do trabalho. O modo D só quando ele pedir texto de
+novo.
+
 ## 1. Antes de qualquer modo
 
 1. **Texto base.** Use a versão mais recente da monografia (docx). No projeto
@@ -203,8 +208,9 @@ capítulo.
 
 | Onde | Para quê |
 | --- | --- |
-| Google Acadêmico (scholar.google.com.br) | Ponto de partida. Filtro "Desde 2019"; "Citado por" acha trabalhos novos que citam um antigo (bom para trocar fonte anterior a 2019); "Citar" dá o ABNT, mas sempre confira. |
-| Portal de Periódicos CAPES | IEEE, Elsevier, Springer e outras, pelo acesso CAFe da instituição. |
+| Google Acadêmico (scholar.google.com.br) | Ponto de partida do usuário. Filtro "Desde 2019"; "Citado por" acha trabalhos novos que citam um antigo (bom para trocar fonte anterior a 2019); "Citar" dá o ABNT, mas sempre confira. O Claude não acessa (o Google bloqueia acesso automatizado): o usuário busca e manda títulos ou links, e o Claude confere. |
+| OpenAlex (openalex.org) | Catálogo aberto de artigos; o substituto do Google Acadêmico para o Claude. Filtra por ano e idioma, ordena por citações e tem "citado por". Pega menos literatura cinzenta (TCCs, PDFs soltos) e conta menos citações que o Google Acadêmico. |
+| Portal de Periódicos CAPES | IEEE, Elsevier, Springer e outras, pelo acesso CAFe da instituição (só o usuário). |
 | SBC OpenLib (sol.sbc.org.br) | Computação no Brasil, revisado por pares: ENIAC, BRACIS, KDMiLe, SBBD. |
 | SciELO Brasil | Revistas brasileiras: seguros, fraude, gestão e governança de dados. |
 | BDTD e Oasisbr (IBICT) | Dissertações e teses brasileiras. |
@@ -221,6 +227,33 @@ Termos que funcionam:
 
 Para organizar as fontes: Zotero (gratuito), que gera a lista em ABNT no Word.
 
+### Como o Claude busca
+
+Testado em 24/10/2026. Use WebFetch e WebSearch (no projeto do TCC no Claude,
+`curl` pelo terminal é bloqueado para esses sites). Anote cada busca (base,
+termos, filtros, data) para a lista "Fontes consultadas" (seção 9).
+
+1. **SBC OpenLib.** A busca geral do site falha. Busque por evento com
+   WebFetch em `https://sol.sbc.org.br/index.php/<evento>/search/search?query=<termos>`
+   (funcionou com `eniac`, `sbbd` e `sbsi`; o nome do evento é o que aparece no
+   endereço dos artigos dele). Para cobrir todos os eventos de uma vez, ou se
+   o evento der erro, use WebSearch com `allowed_domains: ["sol.sbc.org.br"]`.
+2. **OpenAlex**, com WebFetch na API:
+   - busca: `https://api.openalex.org/works?search=<termos>&filter=from_publication_date:2019-01-01,language:pt&sort=cited_by_count:desc&per-page=10&select=id,display_name,publication_year,doi,cited_by_count`
+     (tire `,language:pt` para incluir as estrangeiras);
+   - por DOI: `https://api.openalex.org/works/doi:<DOI>?select=id,display_name,publication_year,cited_by_count`;
+   - "citado por": `https://api.openalex.org/works?filter=cites:<id>,from_publication_date:2019-01-01&select=display_name,publication_year,doi`,
+     com o `<id>` (W...) da fonte antiga; serve para trocar fonte anterior a
+     2019 por uma nova sobre o mesmo assunto.
+3. **SciELO.** O buscador do site bloqueia ferramentas; use WebSearch com
+   `allowed_domains: ["scielo.br"]`.
+4. **Google Acadêmico e Portal CAPES** ficam com o usuário. Quando ele mandar
+   títulos ou links, confira cada um pelo passo 5.
+5. **Conferir antes de sugerir** (regras 2.3 e 2.4). Os dados da referência
+   (autores, título, veículo, volume, páginas, ano) pelo Crossref, com
+   WebFetch em `https://api.crossref.org/works/<DOI>`; o conteúdo na página do
+   artigo ou no PDF. OpenAlex e Crossref não dizem se a fonte sustenta a frase.
+
 ## 8. Modos
 
 ### A. Buscar citações
@@ -230,8 +263,8 @@ Para organizar as fontes: Zotero (gratuito), que gera a lista em ABNT no Word.
    sistema não leva citação; leva evidência no código (seção 4).
 2. Veja se `referencias-verificadas.md` ou a lista atual da monografia já tem
    uma fonte 2019+ que sirva.
-3. Busque (seção 7), primeiro em português. Confira cada candidata pelas
-   regras 2.3 e 2.4.
+3. Busque pelo roteiro "Como o Claude busca" (seção 7), primeiro em
+   português. Confira cada candidata pelas regras 2.3 e 2.4.
 4. Entregue uma tabela: afirmação | fonte | ano | tipo | brasileira ou
    estrangeira | link | conferida ou não conferida. Depois, a referência pronta
    em ABNT e a forma de citar no texto.
@@ -252,7 +285,7 @@ Compare a seção com o projeto (seção 4) e com estas regras. Para cada
 subseção: **Manter**, **Modificar**, **Acrescentar** e **Retirar**, cada item
 com o porquê e o arquivo que comprova. Termine com "O que não colocar", quando
 couber, e a tabela de correções de texto (onde | hoje | sugestão). Modelo:
-`/mnt/project-files/revisao/cap1-o-que-mudar-2026-10-19.md`.
+`/mnt/project-files/revisao/cap1-o-que-mudar-v2-2026-10-24.md`.
 
 ### D. Redigir
 
@@ -269,7 +302,8 @@ sistema. O texto é do grupo: não altere o docx sem pedido.
   chat ou na pasta que o usuário indicar.
 - Toda afirmação sobre o projeto leva a evidência (arquivo da homolog, revisão
   anterior ou saída do experimento). Inferência é dita como inferência.
-- No fim de cada arquivo, a lista "Fontes consultadas" com os links abertos.
+- No fim de cada arquivo, a lista "Fontes consultadas" com os links abertos e
+  as buscas feitas (base, termos, filtros, data).
 
 ## 10. Regra nova
 
