@@ -81,6 +81,11 @@ novo.
    IBGE); TCC; documentação técnica ou blog, só para descrever uma ferramenta
    (ex.: documentação do Kafka ou do Spring). Não use Wikipédia, ferramenta de
    IA nem material sem autor e sem data.
+   **Varie os tipos** (pedido do Pedro, 24/10/2026: lista só de artigos
+   parece trabalho feito por IA). Além dos artigos, procure livros
+   (metodologia, aprendizado de máquina, banco de dados), dissertações e teses,
+   relatórios e normas do setor. Cada fonte entra porque sustenta uma frase,
+   nunca só para variar.
 6. **Evite apud.** Procure o original; se ele for anterior a 2019, procure uma
    fonte recente.
 7. **Texto e lista batem.** Toda citação no texto tem entrada na lista de
@@ -247,9 +252,20 @@ termos, filtros, data) para a lista "Fontes consultadas" (seção 9).
      2019 por uma nova sobre o mesmo assunto.
 3. **SciELO.** O buscador do site bloqueia ferramentas; use WebSearch com
    `allowed_domains: ["scielo.br"]`.
-4. **Google Acadêmico e Portal CAPES** ficam com o usuário. Quando ele mandar
-   títulos ou links, confira cada um pelo passo 5.
-5. **Conferir antes de sugerir** (regras 2.3 e 2.4). Os dados da referência
+4. **Dissertações e teses.** No OpenAlex, troque o filtro por
+   `filter=type:dissertation,from_publication_date:2019-01-01,language:pt`
+   (traz USP, FGV e outras). A BDTD bloqueia ferramentas; use WebSearch com
+   `allowed_domains: ["bdtd.ibict.br", "teses.usp.br", "repositorio.usp.br"]`
+   e abra o PDF no repositório da universidade. O OpenAlex chama de
+   "dissertation" também monografia de especialização ou MBA: confira o tipo
+   na capa.
+5. **Livros.** O OpenAlex quase não tem livros de editoras brasileiras, e as
+   APIs do Google Livros e da Open Library falharam. Use WebSearch (título,
+   autor, edição, ISBN) e confirme edição, ano e editora na página da editora
+   ou de um dos autores; o conteúdo, pelo sumário.
+6. **Google Acadêmico e Portal CAPES** ficam com o usuário. Quando ele mandar
+   títulos ou links, confira cada um pelo passo 7.
+7. **Conferir antes de sugerir** (regras 2.3 e 2.4). Os dados da referência
    (autores, título, veículo, volume, páginas, ano) pelo Crossref, com
    WebFetch em `https://api.crossref.org/works/<DOI>`; o conteúdo na página do
    artigo ou no PDF. OpenAlex e Crossref não dizem se a fonte sustenta a frase.
@@ -276,8 +292,8 @@ Confira a lista inteira e o texto: entradas repetidas; anteriores a 2019, com
 sugestão de troca; sem autor, ano, `Disponível em` ou `Acesso em`; formato fora
 da seção 3; ordem alfabética; citação no texto sem referência e referência que
 o texto não cita (extraia as chamadas do texto com uma expressão regular e
-compare com a lista). Entregue agrupado por tipo de problema, com a correção
-pronta.
+compare com a lista); mistura de tipos de fonte (regra 2.5). Entregue agrupado
+por tipo de problema, com a correção pronta.
 
 ### C. Revisar seção
 
