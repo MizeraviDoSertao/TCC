@@ -564,7 +564,12 @@ Ao resolver um item, atualizar esta tabela e o README do módulo afetado.
 
 1. **Especificar:** escrever a spec da mudança (problema, contrato, critérios de
    aceite) referenciando seções deste documento e, se aplicável, os IDs da
-   seção 10 que a mudança resolve ou agrava.
+   seção 10 que a mudança resolve ou agrava. A spec fica em
+   `specs/NNN-nome/spec.md`, segue o modelo
+   [`.specify/templates/spec-template.md`](../.specify/templates/spec-template.md)
+   e respeita a [constituição](../.specify/memory/constitution.md). No Claude
+   Code, a skill `/especificar` cria e altera specs e implementa as aprovadas
+   seguindo esta seção. Detalhes em [specs/README.md](../specs/README.md).
 2. **Atualizar contratos primeiro:** alterações de API (seção 7.1), tópicos
    (7.2) ou tabelas (8) devem ser documentadas antes do código.
 3. **Implementar respeitando as regras da seção 3.**
@@ -623,6 +628,7 @@ Ao resolver um item, atualizar esta tabela e o README do módulo afetado.
 | [docs/OBJETIVO_DO_SISTEMA.md](./OBJETIVO_DO_SISTEMA.md) | Propósito, atores, fluxos de negócio, visão de produto |
 | [docs/ARQUITETURA_DO_SISTEMA.md](./ARQUITETURA_DO_SISTEMA.md) | Este documento |
 | [docs/REGRAS_DO_PROJETO.md](./REGRAS_DO_PROJETO.md) | Regras do grupo: o que já foi feito, o que ainda será implementado e o que está fora do escopo, com conferência no código |
+| [specs/README.md](../specs/README.md) | Especificações das mudanças (Spec Driven Development), modelo e constituição |
 | [README.md](../README.md) | Como executar o projeto |
 | READMEs de módulo | Listados na seção 5 |
 | `tcc/ARCHITECTURE.md`, `tcc/FLUXO_ANALISE.md` | Histórico; substituídos por este documento (OR-07) |
