@@ -3,7 +3,11 @@
 A documentação anterior descrevia apenas a consulta ao dashboard e não
 representava mais o fluxo de ingestão assíncrona.
 
-A documentação vigente está em [ARCHITECTURE.md](./ARCHITECTURE.md) e cobre:
+> **Atualização:** a documentação oficial agora está em
+> [docs/ARQUITETURA_DO_SISTEMA.md](../docs/ARQUITETURA_DO_SISTEMA.md)
+> (fluxos na seção 6) e no [README do backend](./README.md).
+
+A documentação anterior estava em [ARCHITECTURE.md](./ARCHITECTURE.md) e cobre:
 
 - upload de CSV/XLS/XLSX;
 - Spring Batch;

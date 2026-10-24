@@ -1,5 +1,10 @@
 # Fraud API architecture
 
+> **Documento histórico.** Não cobre `/models`, segurança, `ml.model_training`
+> nem `GET /dashboard/results/{id}`. A referência oficial e atualizada é
+> [docs/ARQUITETURA_DO_SISTEMA.md](../docs/ARQUITETURA_DO_SISTEMA.md) e o
+> [README do backend](./README.md).
+
 ## Scope
 
 The Java service owns dataset ingestion, medallion persistence, orchestration of
