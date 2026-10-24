@@ -61,9 +61,9 @@ novo.
    - Lei, norma técnica e página do dataset não são fonte científica e podem
      ficar (ex.: Lei 13.709/2018, LGPD).
    - Obra que criou uma técnica (ex.: Breiman, 2001, Random Forest; Chawla et
-     al., 2002, SMOTE): prefira um trabalho de 2019+ que descreva a técnica, ou
-     a edição recente de um livro. Citar o original é exceção que o grupo
-     confirma com o orientador; nunca use sem avisar.
+     al., 2002, SMOTE): prefira um artigo ou dissertação de 2019+ que
+     descreva a técnica. Citar o original é exceção que o grupo confirma com o
+     orientador; nunca use sem avisar.
 2. **Brasileira é preferível, não obrigatória.** Procure primeiro em português;
    se a melhor fonte for estrangeira, use a estrangeira. Não troque uma fonte
    boa por uma brasileira fraca só pela nacionalidade.
@@ -82,10 +82,12 @@ novo.
    (ex.: documentação do Kafka ou do Spring). Não use Wikipédia, ferramenta de
    IA nem material sem autor e sem data.
    **Varie os tipos** (pedido do Pedro, 24/10/2026: lista só de artigos
-   parece trabalho feito por IA). Além dos artigos, procure livros
-   (metodologia, aprendizado de máquina, banco de dados), dissertações e teses,
-   relatórios e normas do setor. Cada fonte entra porque sustenta uma frase,
-   nunca só para variar.
+   parece trabalho feito por IA). Além dos artigos, procure dissertações e
+   teses, relatórios e normas do setor. Cada fonte entra porque sustenta uma
+   frase, nunca só para variar.
+   **Evite livros** (pedido do Pedro, 24/10/2026: são difíceis de resumir e de
+   explicar na apresentação). Só sugira livro quando nenhum artigo ou
+   dissertação servir, e avise que é livro.
 6. **Evite apud.** Procure o original; se ele for anterior a 2019, procure uma
    fonte recente.
 7. **Texto e lista batem.** Toda citação no texto tem entrada na lista de
@@ -259,13 +261,9 @@ termos, filtros, data) para a lista "Fontes consultadas" (seção 9).
    e abra o PDF no repositório da universidade. O OpenAlex chama de
    "dissertation" também monografia de especialização ou MBA: confira o tipo
    na capa.
-5. **Livros.** O OpenAlex quase não tem livros de editoras brasileiras, e as
-   APIs do Google Livros e da Open Library falharam. Use WebSearch (título,
-   autor, edição, ISBN) e confirme edição, ano e editora na página da editora
-   ou de um dos autores; o conteúdo, pelo sumário.
-6. **Google Acadêmico e Portal CAPES** ficam com o usuário. Quando ele mandar
-   títulos ou links, confira cada um pelo passo 7.
-7. **Conferir antes de sugerir** (regras 2.3 e 2.4). Os dados da referência
+5. **Google Acadêmico e Portal CAPES** ficam com o usuário. Quando ele mandar
+   títulos ou links, confira cada um pelo passo 6.
+6. **Conferir antes de sugerir** (regras 2.3 e 2.4). Os dados da referência
    (autores, título, veículo, volume, páginas, ano) pelo Crossref, com
    WebFetch em `https://api.crossref.org/works/<DOI>`; o conteúdo na página do
    artigo ou no PDF. OpenAlex e Crossref não dizem se a fonte sustenta a frase.
